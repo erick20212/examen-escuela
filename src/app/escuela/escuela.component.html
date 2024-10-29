@@ -1,0 +1,62 @@
+<app-siderbar></app-siderbar>
+<p-toast></p-toast>
+
+<p-card header="Escuela">
+    <p class="m-0">
+        Información de las escuelas aquí.
+    </p>
+</p-card>
+
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <button pButton type="button" label="Nueva Escuela" icon="pi pi-plus" class="p-mr-2" (click)="openNew()"></button>
+    </div>
+</p-toolbar>
+
+<p-card header="Listar Escuelas">
+    <p-table *ngIf="escuelas && escuelas.length > 0" [value]="escuelas" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Facultad</th>
+                <th style="width: 8rem">Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-escuela>
+            <tr>
+                <td>{{ escuela.id }}</td>
+                <td>{{ escuela.nombre }}</td>
+                <td>{{ escuela.facultad?.nombre }}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editEscuela(escuela)"></button>
+                    <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteEscuela(escuela)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p *ngIf="escuelas.length === 0">No hay escuelas para mostrar.</p>
+</p-card>
+
+<p-dialog [(visible)]="escuelaDialog" [modal]="true" [style]="{width: '50vw', height: '70vh', 'min-height': '500px'}" header="Detalles de la Escuela" [closable]="false">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" type="text" pInputText [(ngModel)]="escuela.nombre" required />
+        </div>
+
+        <div class="p-field">
+            <label for="facultad">Facultad</label>
+
+            <p-dropdown id="facultad" [(ngModel)]="escuela.facultad.id" [options]="facultades" optionLabel="nombre" optionValue="id" filter="true" placeholder="Selecciona Facultad">
+            </p-dropdown>
+        </div>
+    </div>
+
+    <p-footer>
+        <button pButton type="button" label="Guardar" icon="pi pi-check" (click)="saveEscuela()"></button>
+        <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary" (click)="hideDialog()"></button>
+    </p-footer>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

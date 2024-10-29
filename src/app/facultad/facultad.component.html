@@ -1,0 +1,58 @@
+<app-siderbar></app-siderbar>
+<p-toast></p-toast>
+
+<p-card header="Facultad">
+    <p class="m-0">
+        Información de la facultad aquí.
+    </p>
+</p-card>
+
+<!-- Toolbar con botón para crear una nueva Facultad -->
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <button pButton type="button" label="Nueva Facultad" icon="pi pi-plus" class="p-mr-2" (click)="openNew()"></button>
+    </div>
+</p-toolbar>
+
+<p-card header="Listar Facultades">
+    <p-table *ngIf="facultades && facultades.length > 0" [value]="facultades" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th style="width: 8rem">Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-facultad>
+            <tr>
+                <td>{{ facultad.id }}</td>
+                <td>{{ facultad.nombre }}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editFacultad(facultad)"></button>
+                    <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteFacultad(facultad)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- Mensaje si no hay facultades -->
+    <p *ngIf="facultades.length === 0">No hay facultades para mostrar.</p>
+</p-card>
+
+<!-- Diálogo para crear/editar facultad -->
+<p-dialog [(visible)]="facultadDialog" [modal]="true" [style]="{width: '50vw'}" header="Detalles de la Facultad" [closable]="false">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" type="text" pInputText [(ngModel)]="facultad.nombre" required />
+        </div>
+    </div>
+
+    <p-footer>
+        <button pButton type="button" label="Guardar" icon="pi pi-check" (click)="saveFacultad()"></button>
+        <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary" (click)="hideDialog()"></button>
+    </p-footer>
+</p-dialog>
+
+<!-- Confirmación de eliminación -->
+<p-confirmDialog></p-confirmDialog>
